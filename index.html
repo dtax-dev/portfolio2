@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DTAX Portfolio</title>
+<style>
+/* ===== CSS ===== */
+body { background-color: #000; color:#fff; font-family:'Arial', sans-serif; margin:0; padding:0;}
+header { display:flex; justify-content:space-between; align-items:center; padding:20px 40px; border-bottom:1px solid #fff; }
+.logo { height:50px; transition: transform 0.3s; cursor:pointer; }
+.logo:hover { transform: scale(1.1); }
+nav button { background:none; border:1px solid #fff; color:#fff; padding:10px 18px; margin-left:10px; cursor:pointer; transition: all 0.3s; border-radius:5px; font-size:1rem;}
+nav button:hover { background:#fff; color:#000; transform:scale(1.1);}
+main { padding:40px; text-align:center; }
+.home h1{ font-size:5rem; margin:20px 0; }
+.home h2{ font-size:2.5rem; margin:10px 0; color:#aaa;}
+.home h3{ font-size:2rem; margin:5px 0; color:#888;}
+.projects-container { display:grid; grid-template-columns:repeat(auto-fit,minmax(400px,1fr)); gap:40px; text-align:center; margin-top:40px;}
+.project-card { border:1px solid #fff; padding:20px; opacity:0; transform:translateY(30px); transition: transform 0.5s ease, box-shadow 0.5s ease, opacity 0.5s ease; border-radius:15px; background:#111; position:relative; }
+.project-card:hover { transform:translateY(-10px); box-shadow:0 0 30px rgba(255,255,255,0.3);}
+.project-card h3{ font-size:1.8rem; margin:10px 0;}
+.project-card h4{ font-weight:normal; color:#aaa; margin:5px 0 10px 0; font-size:1.2rem;}
+.project-card p{ font-size:1rem; line-height:1.5; color:#ccc;}
+.project-card.animate { opacity:1; transform:translateY(0); }
+.carousel-container { position:relative; width:100%; height:350px; overflow:hidden; margin-bottom:15px;}
+.carousel img { width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; opacity:0; transition:opacity 0.6s ease; border-radius:10px;}
+.carousel img:first-child { opacity:1; }
+.carousel button { position:absolute; top:50%; transform:translateY(-50%); background:none; border:1px solid #fff; color:#fff; padding:8px 12px; cursor:pointer; border-radius:5px; transition:0.3s; opacity:0.7; font-size:1.2rem;}
+.carousel button:hover { background:#fff; color:#000; opacity:1; transform:scale(1.2);}
+.carousel .prev { left:10px;}
+.carousel .next { right:10px;}
+.contact p { margin:15px 0; font-size:1.2rem;}
+footer { text-align:center; padding:20px; border-top:1px solid #fff; color:#888;}
+.hidden{ display:none;}
+</style>
+</head>
+<body>
+
+<header>
+    <img src="images/logo.png" alt="DTAX Logo" class="logo">
+    <nav>
+        <button onclick="showPage('home')">Home</button>
+        <button onclick="showPage('projects')">Projects</button>
+        <button onclick="showPage('contact')">Contact</button>
+    </nav>
+</header>
+
+<main>
+    <!-- HOME -->
+    <div id="home" class="home">
+        <h1>PORTFOLIO</h1>
+        <h2>DTAX's Portfolio</h2>
+        <h3>DEV</h3>
+    </div>
+
+    <!-- PROJECTS -->
+    <div id="projects" class="hidden">
+        <section class="projects-container"></section>
+    </div>
+
+    <!-- CONTACT -->
+    <div id="contact" class="contact hidden">
+        <h1>Contact</h1>
+        <p>Discord: @dtax_blawht</p>
+        <p>Telegram: @AyoDTA</p>
+    </div>
+</main>
+
+<footer>
+    <p>© 2026 DTAX</p>
+</footer>
+
+<script>
+// ===== Show Page Function =====
+function showPage(page){
+    ['home','projects','contact'].forEach(p=>{
+        document.getElementById(p).classList.add('hidden');
+    });
+    document.getElementById(page).classList.remove('hidden');
+
+    if(page==='projects') loadProjects();
+}
+
+// ===== Projects Data with Screenshots =====
+const projectsData = [
+    {
+        title:"DISCORD BOT",
+        subtitle:"Bot Project 1",
+        description:"This is a Discord bot project that I developed. It includes various features and commands.",
+        images:[
+            "images/screenshot1a.png",
+            "images/screenshot1b.png",
+            "images/screenshot1c.png"
+        ],
+        link:"#"
+    },
+    {
+        title:"DISCORD BOT",
+        subtitle:"Bot Project 2",
+        description:"This is a second Discord bot project with advanced functionalities and custom commands.",
+        images:[
+            "images/screenshot2a.png",
+            "images/screenshot2b.png",
+            "images/screenshot2c.png"
+        ],
+        link:"#"
+    }
+];
+
+// ===== Load Projects Dynamically with Large Carousel =====
+function loadProjects(){
+    const container = document.querySelector('.projects-container');
+    if(container.innerHTML) return;
+    
+    projectsData.forEach((project,index)=>{
+        const card = document.createElement('div');
+        card.className='project-card';
+
+        // Carousel HTML
+        let carouselHTML = `<div class="carousel-container">
+            <div class="carousel">`;
+        project.images.forEach((img,i)=>{
+            carouselHTML += `<img src="${img}" alt="${project.title}" style="opacity:${i===0?1:0};">`;
+        });
+        carouselHTML += `
+            <button class="prev">&#10094;</button>
+            <button class="next">&#10095;</button>
+            </div></div>`;
+
+        card.innerHTML=`
+            ${carouselHTML}
+            <h3>${project.title}</h3>
+            <h4>${project.subtitle}</h4>
+            <p>${project.description}</p>
+            <a href="${project.link}" target="_blank" style="color:#fff; text-decoration:underline;">View Project</a>
+        `;
+
+        container.appendChild(card);
+        setTimeout(()=>{ card.classList.add('animate'); }, index*200);
+
+        // Carousel functionality with fade
+        const carousel = card.querySelector('.carousel');
+        const imgs = carousel.querySelectorAll('img');
+        let current = 0;
+        const prevBtn = carousel.querySelector('.prev');
+        const nextBtn = carousel.querySelector('.next');
+
+        function showImage(newIndex){
+            imgs[current].style.opacity = 0;
+            imgs[newIndex].style.opacity = 1;
+            current = newIndex;
+        }
+
+        prevBtn.onclick = ()=>{ showImage((current-1+imgs.length)%imgs.length); }
+        nextBtn.onclick = ()=>{ showImage((current+1)%imgs.length); }
+    });
+}
+
+// ===== Initialize Home Page =====
+showPage('home');
+</script>
+<script src="js/main.js"></script>
+</body>
+</html>
+
