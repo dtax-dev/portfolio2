@@ -13,7 +13,7 @@ h2{font-size:36px;margin-bottom:30px;}
 p{opacity:0.8;line-height:1.5;}
 button{padding:12px 25px;border-radius:30px;border:none;cursor:pointer;transition:0.3s;background:#fff;color:#0d0d0d;margin-top:20px;}
 button:hover{transform:scale(1.05);}
-.card{background:rgba(255,255,255,0.05);padding:25px;border-radius:15px;margin:50px auto;max-width:600px;opacity:0;transform:translateY(40px);transition:0.8s ease-out;position:relative;}
+.card{background:rgba(255,255,255,0.05);padding:25px;border-radius:15px;margin:50px auto;max-width:700px;opacity:0;transform:translateY(40px);transition:0.8s ease-out;position:relative;}
 .card.show{opacity:1;transform:translateY(0);}
 .card img{width:100%;border-radius:12px;margin-bottom:15px;}
 .line{position:absolute;left:50%;width:4px;background:rgba(200,200,200,0.3);top:0;bottom:0;margin-left:-2px;z-index:0;}
@@ -46,22 +46,21 @@ footer{padding:50px;text-align:center;opacity:0.5;}
 <h2>My Work</h2>
 
 <div class="card">
-<img src="images/screenshot1a.png" alt="Project 1">
+<img src="images/screenshot1a.png" alt="Project 1 image 1">
+<img src="images/screenshot1b.png" alt="Project 1 image 2">
+<img src="images/screenshot1c.png" alt="Project 1 image 3">
 <h3>Discord Bot</h3>
 <p>Automation, moderation, commands. Everything custom.</p>
 </div>
 
 <div class="card">
-<img src="images/screenshot2a.png" alt="Project 2">
+<img src="images/screenshot2a.png" alt="Project 2 image 1">
+<img src="images/screenshot2b.png" alt="Project 2 image 2">
+<img src="images/screenshot2c.png" alt="Project 2 image 3">
 <h3>Website Project</h3>
 <p>Responsive, modern design, smooth animations.</p>
 </div>
 
-<div class="card">
-<img src="images/screenshot3a.png" alt="Project 3">
-<h3>Side Project</h3>
-<p>Small experiment, fun stuff, just to show skills.</p>
-</div>
 </section>
 
 <section id="contact">
@@ -83,13 +82,11 @@ footer{padding:50px;text-align:center;opacity:0.5;}
 
 <script>
 function go(id){document.getElementById(id).scrollIntoView({behavior:"smooth"});}
-
 const obs = new IntersectionObserver(e=>{
   e.forEach(entry=>{
     if(entry.isIntersecting){entry.target.classList.add('show');}
   });
 },{threshold:0.2});
-
 document.querySelectorAll('.card').forEach(c=>obs.observe(c));
 </script>
 
